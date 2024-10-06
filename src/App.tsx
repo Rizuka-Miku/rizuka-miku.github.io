@@ -7,14 +7,15 @@ import BioData from './components/BioData'
 function App() {
   const homeRef = useRef<HTMLDivElement>(null)
   const aboutRef = useRef<HTMLDivElement>(null)
-  const projectRef = useRef<HTMLDivElement>(null)
+  const oriRef = useRef<HTMLDivElement>(null)
+  const coverRef = useRef<HTMLDivElement>(null)
 
   return (
     <div className="flex flex-col min-h-[100dvh]" ref={homeRef}>
-      <Header homeRef={homeRef} aboutRef={aboutRef} projectRef={projectRef}/>
+      <Header homeRef={homeRef} aboutRef={aboutRef} projectRef={oriRef} coverRef={coverRef}/>
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32 bg-[#A1326F]">
-          <div className="container px-4 md:px-6">
+          <div className="container mt-5 px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
               <div className="flex flex-col justify-center space-y-4">
                 <div className="space-y-2">
@@ -39,7 +40,7 @@ function App() {
         <section id="about" className="w-full py-12 md:py-24 lg:py-32 bg-[#253D57]" ref={aboutRef}>
           <BioData />
         </section>
-        <section id="project" className="w-full py-12 md:py-24 lg:py-32 bg-muted" ref={projectRef}>
+        <section id="project" className="w-full py-12 md:py-24 lg:py-32 bg-muted" ref={oriRef}>
           <div className="container px-4 md:px-6">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-8">Original Song</h2>
             <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
@@ -49,7 +50,7 @@ function App() {
             </div>
           </div>
         </section>
-        <section id="project" className="w-full py-12 md:py-24 lg:py-32 bg-muted" ref={projectRef}>
+        <section id="project" className="w-full py-12 md:py-24 lg:py-32 bg-muted" ref={coverRef}>
           <div className="container px-4 md:px-6">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-8">Cover Song</h2>
             <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
