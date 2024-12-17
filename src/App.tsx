@@ -46,7 +46,8 @@ function App() {
             <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               <ProjectCard imageLink='https://img.youtube.com/vi/D0YoypKJVwE/hqdefault.jpg' title='Rasa Cemasku' description='1st Original Song Rizuka Miku' projectLink='https://www.youtube.com/watch?v=D0YoypKJVwE'/>
               <ProjectCard imageLink='https://img.youtube.com/vi/WV1WzRi1OiA/hqdefault.jpg' title='Gemerlap Bintang' description='2nd Original Song Rizuka Miku' projectLink='https://www.youtube.com/watch?v=WV1WzRi1OiA'/>
-              <ProjectCard imageLink='https://img.youtube.com/vi/fsWSYE1E8Eo/hqdefault.jpg' title='Dreamcatcher' description='2nd Original Song Rizuka Miku' projectLink='https://www.youtube.com/watch?v=fsWSYE1E8Eo'/>
+              <ProjectCard imageLink='https://img.youtube.com/vi/fsWSYE1E8Eo/hqdefault.jpg' title='Dreamcatcher' description='3rd Original Song Rizuka Miku' projectLink='https://www.youtube.com/watch?v=fsWSYE1E8Eo'/>
+              <ProjectCard imageLink='https://img.youtube.com/vi/rVtw13YiTfo/hqdefault.jpg' title='Bulan dan Matahari' description='4th Original Song Rizuka Miku' projectLink='https://www.youtube.com/watch?v=rVtw13YiTfo'/>
             </div>
           </div>
         </section>
