@@ -10,7 +10,7 @@ export default function BioData() {
           <AvatarFallback>RM</AvatarFallback>
         </Avatar>
         <h1 className="text-4xl md:text-6xl font-bold mb-4">💖 Rizuka Miku ✨</h1>
-        <div className="grid grid-cols-4 gap-2 text-muted-foreground mb-8">
+        <div className="grid grid-cols-1 gap-2 text-muted-foreground mb-8 md:grid-cols-2 xl:grid-cols-4">
           <div>
             <span className="font-medium">Tanggal Lahir:</span> 13 Agustus
           </div>
@@ -24,7 +24,7 @@ export default function BioData() {
             <span className="font-medium">Oshi Mark:</span> 💖✨
           </div>
         </div>
-        <div className="grid gap-4 md:grid-cols-3 w-full max-w-2xl">
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-3 w-[140px] md:w-full max-w-2xl">
           <a className="flex items-center gap-2 text-muted-foreground" href='https://www.youtube.com/@RizukaMiku_Vtuber'>
             <YoutubeIcon className="h-4 w-4" />
             <span>Rizuka Miku Ch.</span>
@@ -38,7 +38,7 @@ export default function BioData() {
             <span>rizuka_miku</span>
           </a>
         </div>
-        <div className="grid gap-4 md:grid-cols-3 w-full max-w-2xl mt-8">
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-3 w-[140px] md:w-full max-w-2xl mt-8">
           <a href='https://trakteer.id/RizukaMiku' className="flex items-center gap-2 text-muted-foreground">
             <GiftIcon className="h-4 w-4" />
             <span>Rizuka Miku</span>

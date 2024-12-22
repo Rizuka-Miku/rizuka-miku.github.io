@@ -1,7 +1,9 @@
 import Header from '@/components/Header'
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import ProjectCard from "./components/ProjectCard"
+import Modal from '@/components/Modal'
 import BioData from './components/BioData'
+import oriSong from '@/db/originalSong.json'
 
 
 function App() {
@@ -9,6 +11,8 @@ function App() {
   const aboutRef = useRef<HTMLDivElement>(null)
   const oriRef = useRef<HTMLDivElement>(null)
   const coverRef = useRef<HTMLDivElement>(null)
+
+  const [selectedSong, setSelectedSong] = useState<typeof oriSong[0] | null>(null);
 
   return (
     <div className="flex flex-col min-h-[100dvh]" ref={homeRef}>
@@ -44,12 +48,25 @@ function App() {
           <div className="container px-4 md:px-6">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-8">Original Song</h2>
             <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-              <ProjectCard imageLink='https://img.youtube.com/vi/D0YoypKJVwE/hqdefault.jpg' title='Rasa Cemasku' description='1st Original Song Rizuka Miku' projectLink='https://www.youtube.com/watch?v=D0YoypKJVwE'/>
-              <ProjectCard imageLink='https://img.youtube.com/vi/WV1WzRi1OiA/hqdefault.jpg' title='Gemerlap Bintang' description='2nd Original Song Rizuka Miku' projectLink='https://www.youtube.com/watch?v=WV1WzRi1OiA'/>
-              <ProjectCard imageLink='https://img.youtube.com/vi/fsWSYE1E8Eo/hqdefault.jpg' title='Dreamcatcher' description='3rd Original Song Rizuka Miku' projectLink='https://www.youtube.com/watch?v=fsWSYE1E8Eo'/>
-              <ProjectCard imageLink='https://img.youtube.com/vi/rVtw13YiTfo/hqdefault.jpg' title='Bulan dan Matahari' description='4th Original Song Rizuka Miku' projectLink='https://www.youtube.com/watch?v=rVtw13YiTfo'/>
+              {oriSong?.map((song,index) => (
+                <ProjectCard imageLink={song.imageLink} title={song.title} description={song.description} projectLink={song.projectLink}  key={index} lyrics={song.lyrics} onViewLyrics={() => setSelectedSong(song)}/>
+              ))}
             </div>
           </div>
+          <Modal
+             isOpen={!!selectedSong}
+             onClose={() => setSelectedSong(null)}
+             title={selectedSong?.title}
+          >
+            <p className="text-sm text-gray-700">
+              {selectedSong?.lyrics.split("\n").map((line, index) => (
+                <span key={index}>
+                  {line}
+                  <br />
+                </span>
+              ))}
+            </p>
+          </Modal>
         </section>
         <section id="project" className="w-full py-12 md:py-24 lg:py-32 bg-muted" ref={coverRef}>
           <div className="container px-4 md:px-6">
