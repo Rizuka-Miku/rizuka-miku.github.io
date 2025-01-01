@@ -6,7 +6,7 @@ export default function BioData() {
     <div className="w-full bg-primary text-primary-foreground py-20 md:py-32">
       <div className="container mx-auto px-4 md:px-6 flex flex-col items-center text-center text-white">
         <Avatar className="h-24 w-24 mb-6">
-          <AvatarImage src="https://pbs.twimg.com/profile_images/1867821317367660544/utIdF9lo_400x400.jpg" alt="Rizuka Miku Foto Profile" />
+          <AvatarImage src="https://pbs.twimg.com/media/GYI8VTAaIAA1usl?format=jpg&name=4096x4096" alt="Rizuka Miku Foto Profile" />
           <AvatarFallback>RM</AvatarFallback>
         </Avatar>
         <h1 className="text-4xl md:text-6xl font-bold mb-4">💖 Rizuka Miku ✨</h1>
