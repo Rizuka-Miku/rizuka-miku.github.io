@@ -16,6 +16,8 @@ function App() {
   const isMobile = window.innerWidth < 768
 
   const [selectedSong, setSelectedSong] = useState<typeof oriSong[0] | null>(null);
+  const date = new Date();
+  const year = date.getFullYear();
 
   return (
     <div className="flex flex-col min-h-[100dvh]" ref={homeRef}>
@@ -107,7 +109,7 @@ function App() {
         <ScrollToTop />
       </main>
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
-        <p className="text-xs text-muted-foreground">&copy; 2024 Rizuka Miku.</p>
+        <p className="text-xs text-muted-foreground">&copy; {year} Rizuka Miku.</p>
       </footer>
     </div>
   )

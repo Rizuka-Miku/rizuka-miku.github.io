@@ -13,9 +13,6 @@ const CustomSlider = ({ slidesLength, children }: SliderProps) => {
 
   const calculateThumbPosition = () => (activeIndex / (slidesLength - 1)) * 100;
 
-//   console.log('thumbWidth', thumbWidth);
-  console.log('calculateThumbPosition', calculateThumbPosition());
-
   const settings = {
     dots: true,
     infinite: true,
