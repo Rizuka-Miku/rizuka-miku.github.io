@@ -100,7 +100,7 @@ function App() {
                 {/* <ProjectCard imageLink='https://img.youtube.com/vi/xawGBRZn9VQ/hqdefault.jpg' title='Itoshisha no Defense' description='Itoshisha no Defense by JKT48' projectLink='https://www.youtube.com/watch?v=xawGBRZn9VQ'/> */}
                 {/* <ProjectCard imageLink='https://img.youtube.com/vi/5729CtVSFGc/hqdefault.jpg' title='BINGO!' description='BINGO! by JKT48' projectLink='https://www.youtube.com/watch?v=5729CtVSFGc'/> */}
                 <ProjectCard imageLink='https://img.youtube.com/vi/GRQ14yZh3KY/hqdefault.jpg' title='恋色' description='恋色 by もさを' projectLink='https://www.youtube.com/watch?v=GRQ14yZh3KY'/>
-                {/* <ProjectCard imageLink='https://img.youtube.com/vi/gEX1Hr5lmU8/hqdefault.jpg' title='Seventeen (Cover by Rizuka Miku & Vhika Hikari)' description='Seventeen by JKT48' projectLink='https://www.youtube.com/watch?v=gEX1Hr5lmU8'/> */}
+                <ProjectCard imageLink='https://img.youtube.com/vi/gEX1Hr5lmU8/hqdefault.jpg' title='Seventeen (Cover by Rizuka Miku & Vhika Hikari)' description='Seventeen by JKT48' projectLink='https://www.youtube.com/watch?v=gEX1Hr5lmU8'/>
                 <ProjectCard imageLink='https://img.youtube.com/vi/CG9sYT70xHw/hqdefault.jpg' title='Heart Gata Virus (Cover by Rizuka Miku, Vhika Hikari, Mariela Riona)' description='Seventeen by JKT48' projectLink='https://www.youtube.com/watch?v=CG9sYT70xHw'/>
               </div>
             )}
