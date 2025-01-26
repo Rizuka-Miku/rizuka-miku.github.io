@@ -23,7 +23,7 @@ function App() {
     <div className="flex flex-col min-h-[100dvh]" ref={homeRef}>
       <Header homeRef={homeRef} aboutRef={aboutRef} projectRef={oriRef} coverRef={coverRef}/>
       <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-[#A1326F]">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-[#A1326F] h-screen">
           <div className="container mt-5 px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
               <div className="flex flex-col justify-center space-y-4">
@@ -36,13 +36,13 @@ function App() {
                   </p>
                 </div>
               </div>
-              <img
-                src="https://pbs.twimg.com/media/F0IQdH4aMAEKzPB?format=jpg&name=large"
-                width="550"
-                height="550"
-                alt="Hero"
-                className="mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full lg:order-last lg:aspect-square"
-              />
+                {isMobile ? (
+                  <div className="flex justify-center">
+                    <iframe width="320" height="180" src="https://www.youtube.com/embed/mtCh0rIBoc8?autoplay=1&si=aAk0u7apRupYYhTc&mute=1" title="【MODEL SHOWCASE】 Rizuka Miku - INTRO (Starlight) Short ver" frameBorder={"0"} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+                  </div>
+                ) : (
+                  <iframe width="560" height="315" src="https://www.youtube.com/embed/mtCh0rIBoc8?autoplay=1&si=aAk0u7apRupYYhTc&mute=1" title="【MODEL SHOWCASE】 Rizuka Miku - INTRO (Starlight) Short ver" frameBorder={"0"} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+                )}
             </div>
           </div>
         </section>
