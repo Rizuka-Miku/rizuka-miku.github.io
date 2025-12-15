@@ -35,6 +35,8 @@ const CustomSlider = ({ slidesLength, children }: SliderProps) => {
     ),
     arrows: false,
     adaptiveHeight: true,
+    swipe: false,
+    touchMove: false,
   };
 
   return <Slider {...settings}>{children}</Slider>;
