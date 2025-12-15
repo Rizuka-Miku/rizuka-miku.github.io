@@ -1,5 +1,5 @@
 import Header from '@/components/Header'
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
 import ProjectCard from "./components/ProjectCard"
 import Modal from '@/components/Modal'
 import BioData from './components/BioData'
@@ -7,6 +7,7 @@ import oriSong from '@/db/originalSong.json'
 import coverSong from '@/db/coverSong.json'
 import ScrollToTop from '@/components/ScrollToTop'
 import CustomSlider from '@/components/CustomSlider'
+import { ThemeProvider } from '@/contexts/ThemeContext'
 
 
 function App() {
@@ -14,18 +15,23 @@ function App() {
   const aboutRef = useRef<HTMLDivElement>(null)
   const oriRef = useRef<HTMLDivElement>(null)
   const coverRef = useRef<HTMLDivElement>(null)
-  const isMobile = window.innerWidth < 768
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768)
+  }, [])
 
   const [selectedSong, setSelectedSong] = useState<typeof oriSong[0] | null>(null);
   const date = new Date();
   const year = date.getFullYear();
 
   return (
-    <div className="flex flex-col min-h-[100dvh]" ref={homeRef}>
+    <ThemeProvider>
+      <div className="flex flex-col min-h-[100dvh]" ref={homeRef}>
       <Header homeRef={homeRef} aboutRef={aboutRef} projectRef={oriRef} coverRef={coverRef}/>
       <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-[#A1326F] h-screen">
-          <div className="container mt-5 px-4 md:px-6">
+          <section className="w-full py-12 md:py-24 lg:py-32 bg-[#A1326F] dark:bg-[#682048] h-screen">
+          <div className="mt-5 px-4 lg:px-6">
             <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
               <div className="flex flex-col justify-center space-y-4">
                 <div className="space-y-2">
@@ -47,12 +53,12 @@ function App() {
             </div>
           </div>
         </section>
-        <section id="about" className="w-full py-12 md:py-24 lg:py-32 bg-[#253D57]" ref={aboutRef}>
+          <section id="about" className="w-full py-12 md:py-24 lg:py-32 bg-[#253D57] dark:bg-[#0f1a2a]" ref={aboutRef}>
           <BioData />
         </section>
-        <section id="project" className="w-full py-12 md:py-24 lg:py-32 bg-muted" ref={oriRef}>
-          <div className="container px-4 md:px-6">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-8">Original Song</h2>
+          <section id="project" className="w-full py-12 md:py-24 lg:py-32 bg-white dark:bg-gray-900" ref={oriRef}>
+          <div className="px-4 lg:px-6">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-8 text-black dark:text-white">Original Song</h2>
             {isMobile ? (
               <>
                 <CustomSlider slidesLength={oriSong.length}>
@@ -74,7 +80,7 @@ function App() {
              onClose={() => setSelectedSong(null)}
              title={selectedSong?.title}
           >
-            <p className="text-sm text-gray-700">
+            <p className="text-sm text-gray-700 dark:text-gray-300">
               {selectedSong?.lyrics.split("\n").map((line, index) => (
                 <span key={index}>
                   {line}
@@ -84,9 +90,9 @@ function App() {
             </p>
           </Modal>
         </section>
-        <section id="project" className="w-full py-12 md:py-24 lg:py-32 bg-muted" ref={coverRef}>
-          <div className="container px-4 md:px-6">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-8">Cover Song</h2>
+          <section id="project" className="w-full py-12 md:py-24 lg:py-32 bg-white dark:bg-gray-900" ref={coverRef}>
+          <div className="px-4 lg:px-6">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-8 text-black dark:text-white">Cover Song</h2>
             {isMobile ? 
               (
                 <>
@@ -108,13 +114,14 @@ function App() {
         </section>
         <ScrollToTop />
       </main>
-      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
-        <p className="text-xs text-muted-foreground">&copy; {year} Rizuka Miku.</p>
+      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 bg-white dark:bg-gray-900 lg:px-6 border-t">
+        <p className="text-xs text-black dark:text-white">&copy; {year} Rizuka Miku.</p>
           {/* <ProjectCard imageLink='https://img.youtube.com/vi/xawGBRZn9VQ/hqdefault.jpg' title='Itoshisha no Defense' description='Itoshisha no Defense by JKT48' projectLink='https://www.youtube.com/watch?v=xawGBRZn9VQ'/> */}
           {/* <ProjectCard imageLink='https://img.youtube.com/vi/5729CtVSFGc/hqdefault.jpg' title='BINGO!' description='BINGO! by JKT48' projectLink='https://www.youtube.com/watch?v=5729CtVSFGc'/> */}
           {/* <ProjectCard imageLink='https://img.youtube.com/vi/gEX1Hr5lmU8/hqdefault.jpg' title='Seventeen (Cover by Rizuka Miku & Vhika Hikari)' description='Seventeen by JKT48' projectLink='https://www.youtube.com/watch?v=gEX1Hr5lmU8'/> */}
       </footer>
     </div>
+    </ThemeProvider>
   )
 }
 

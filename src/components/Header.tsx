@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useTheme } from "@/contexts/ThemeContext";
+import { Switch } from "@/components/ui/switch";
 
 interface HeaderProps {
   homeRef: React.RefObject<HTMLDivElement>;
@@ -9,6 +11,7 @@ interface HeaderProps {
 
 const Header = ({ homeRef, aboutRef, projectRef, coverRef }: HeaderProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   const scrollToRef = (ref: React.RefObject<HTMLDivElement>) => {
     ref.current?.scrollIntoView({ behavior: "smooth" });
@@ -16,7 +19,7 @@ const Header = ({ homeRef, aboutRef, projectRef, coverRef }: HeaderProps) => {
   };
 
   return (
-    <header className="fixed top-0 left-0 w-full bg-[#A1326F] text-white px-4 lg:px-6 h-14 flex items-center z-50">
+    <header className="fixed top-0 left-0 w-full bg-[#A1326F] dark:bg-[#682048] text-white px-4 lg:px-6 h-14 flex items-center z-50">
       {/* Logo */}
       <div className="flex items-center justify-center cursor-pointer">
         <img
@@ -53,6 +56,10 @@ const Header = ({ homeRef, aboutRef, projectRef, coverRef }: HeaderProps) => {
         >
           Join Rizuniverse
         </a>
+        <Switch
+          checked={theme === 'dark'}
+          onCheckedChange={toggleTheme}
+        />
       </nav>
 
       {/* Mobile Navigation */}
@@ -90,6 +97,15 @@ const Header = ({ homeRef, aboutRef, projectRef, coverRef }: HeaderProps) => {
             >
               Join Rizuniverse
             </a>
+            <div className="px-4 py-2">
+              <Switch
+                checked={theme === 'dark'}
+                onCheckedChange={() => {
+                  toggleTheme();
+                  setIsDropdownOpen(false);
+                }}
+              />
+            </div>
           </div>
         )}
       </div>

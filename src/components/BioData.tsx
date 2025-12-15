@@ -4,7 +4,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 export default function BioData() {
   return (
     <div className="w-full bg-primary text-primary-foreground py-20 md:py-32">
-      <div className="container mx-auto px-4 md:px-6 flex flex-col items-center text-center text-white">
+      <div className="px-4 lg:px-6 flex flex-col items-center text-center text-white">
         <Avatar className="h-24 w-24 mb-6">
           <AvatarImage src="https://pbs.twimg.com/media/GYI8VTAaIAA1usl?format=jpg&name=4096x4096" alt="Rizuka Miku Foto Profile" />
           <AvatarFallback>RM</AvatarFallback>
