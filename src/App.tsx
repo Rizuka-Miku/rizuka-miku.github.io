@@ -1,12 +1,12 @@
 import Header from '@/components/Header'
 import { useRef, useState, useEffect } from "react"
 import ProjectCard from "./components/ProjectCard"
+import MobileCarousel from './components/MobileCarousel'
 import Modal from '@/components/Modal'
 import BioData from './components/BioData'
 import oriSong from '@/db/originalSong.json'
 import coverSong from '@/db/coverSong.json'
 import ScrollToTop from '@/components/ScrollToTop'
-import CustomSlider from '@/components/CustomSlider'
 import { ThemeProvider } from '@/contexts/ThemeContext'
 
 
@@ -15,7 +15,7 @@ function App() {
   const aboutRef = useRef<HTMLDivElement>(null)
   const oriRef = useRef<HTMLDivElement>(null)
   const coverRef = useRef<HTMLDivElement>(null)
-  const [isMobile, setIsMobile] = useState(false)
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768)
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 768)
@@ -27,7 +27,7 @@ function App() {
 
   return (
     <ThemeProvider>
-      <div className="flex flex-col min-h-[100dvh]" ref={homeRef}>
+      <div className="flex flex-col min-h-[100dvh] overflow-x-hidden" ref={homeRef}>
       <Header homeRef={homeRef} aboutRef={aboutRef} projectRef={oriRef} coverRef={coverRef}/>
       <main className="flex-1">
           <section className="w-full py-12 md:py-24 lg:py-32 bg-[#A1326F] dark:bg-[#682048] h-screen">
@@ -45,10 +45,30 @@ function App() {
               </div>
                 {isMobile ? (
                   <div className="flex justify-center">
-                    <iframe width="320" height="180" src="https://www.youtube.com/embed/mtCh0rIBoc8?autoplay=1&si=aAk0u7apRupYYhTc&mute=1" title="【MODEL SHOWCASE】 Rizuka Miku - INTRO (Starlight) Short ver" frameBorder={"0"} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+                    <video
+                      controls
+                      autoPlay
+                      muted
+                      preload="metadata"
+                      className="w-[320px] h-[180px] object-cover rounded"
+                    >
+                      <source src="/videos/intro.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
                   </div>
                 ) : (
-                  <iframe width="560" height="315" src="https://www.youtube.com/embed/mtCh0rIBoc8?autoplay=1&si=aAk0u7apRupYYhTc&mute=1" title="【MODEL SHOWCASE】 Rizuka Miku - INTRO (Starlight) Short ver" frameBorder={"0"} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+                  <div className="w-full max-w-[560px]">
+                    <video
+                      controls
+                      autoPlay
+                      muted
+                      preload="metadata"
+                      className="w-full aspect-video object-cover rounded"
+                    >
+                      <source src="/videos/intro.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
                 )}
             </div>
           </div>
@@ -59,21 +79,20 @@ function App() {
           <section id="project" className="w-full py-12 md:py-24 lg:py-32 bg-white dark:bg-gray-900" ref={oriRef}>
           <div className="px-4 lg:px-6">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-8 text-black dark:text-white">Original Song</h2>
-            {isMobile ? (
-              <>
-                <CustomSlider slidesLength={oriSong.length}>
-                  {oriSong.map((song,index) => (
-                    <ProjectCard imageLink={song.imageLink} title={song.title} description={song.description} projectLink={song.projectLink} key={index} lyrics={song.lyrics} onViewLyrics={() => setSelectedSong(song)}/>
-                  ))}
-                  </CustomSlider >
-              </>
-            ) : (
+            <div className="block md:hidden">
+              <MobileCarousel>
+                {oriSong.map((song, index) => (
+                  <ProjectCard key={index} imageLink={song.imageLink} title={song.title} description={song.description} projectLink={song.projectLink} lyrics={song.lyrics} onViewLyrics={() => setSelectedSong(song)}/>
+                ))}
+              </MobileCarousel>
+            </div>
+            <div className="hidden md:block">
               <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 {oriSong?.map((song,index) => (
                   <ProjectCard imageLink={song.imageLink} title={song.title} description={song.description} projectLink={song.projectLink}  key={index} lyrics={song.lyrics} onViewLyrics={() => setSelectedSong(song)}/>
                 ))}
               </div>
-            )}
+            </div>
           </div>
           <Modal
              isOpen={!!selectedSong}
@@ -93,23 +112,20 @@ function App() {
           <section id="project" className="w-full py-12 md:py-24 lg:py-32 bg-white dark:bg-gray-900" ref={coverRef}>
           <div className="px-4 lg:px-6">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-8 text-black dark:text-white">Cover Song</h2>
-            {isMobile ? 
-              (
-                <>
-                  <CustomSlider slidesLength={coverSong.length}>
-                    {coverSong?.map((song,index) => (
-                      <ProjectCard  imageLink={song.imageLink} title={song.title} description={song.description} key={index} projectLink={song.projectLink}/>
-                    ))}
-                  </CustomSlider>
-                </>
-              )
-            : (
+            <div className="block md:hidden">
+              <MobileCarousel>
+                {coverSong?.map((song,index) => (
+                  <ProjectCard key={index} imageLink={song.imageLink} title={song.title} description={song.description} projectLink={song.projectLink}/>
+                ))}
+              </MobileCarousel>
+            </div>
+            <div className="hidden md:block">
               <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                     {coverSong?.map((song,index) => (
                         <ProjectCard  imageLink={song.imageLink} title={song.title} description={song.description} key={index} projectLink={song.projectLink}/>
                     ))}
               </div>
-            )}
+            </div>
           </div>
         </section>
         <ScrollToTop />

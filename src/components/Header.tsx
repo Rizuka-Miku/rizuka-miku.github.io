@@ -63,7 +63,13 @@ const Header = ({ homeRef, aboutRef, projectRef, coverRef }: HeaderProps) => {
       </nav>
 
       {/* Mobile Navigation */}
-      <div className="ml-auto md:hidden">
+      <div className="ml-auto md:hidden flex items-center gap-2">
+        <div className="inline-flex items-center">
+          <Switch
+            checked={theme === 'dark'}
+            onCheckedChange={toggleTheme}
+          />
+        </div>
         <button
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           className="p-2 text-white hover:bg-white hover:text-[#A1326F] rounded"
@@ -97,15 +103,6 @@ const Header = ({ homeRef, aboutRef, projectRef, coverRef }: HeaderProps) => {
             >
               Join Rizuniverse
             </a>
-            <div className="px-4 py-2">
-              <Switch
-                checked={theme === 'dark'}
-                onCheckedChange={() => {
-                  toggleTheme();
-                  setIsDropdownOpen(false);
-                }}
-              />
-            </div>
           </div>
         )}
       </div>
