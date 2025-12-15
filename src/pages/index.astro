@@ -2,14 +2,55 @@
 import App from '../App.tsx';
 import '../index.css';
 import '../styles/style.css';
+import { SEO } from 'astro-seo';
 ---
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/png" href="/rizuka-bocil.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Rizuka Miku Web</title>
+<SEO
+  title="Rizuka Miku – Menyinari Kegelapan Yang Ada Di Hatimu"
+  description="Rizuka Miku menyinari kegelapan yang ada di hatimu melalui cerita, tawa, dan kebersamaan. Indie VTuber Indonesia bertema Kucing Bulan mari ikut ke dunia Rizuka Miku di Rizuniverse!"
+  canonical="https://rizuka-miku.github.io"
+  openGraph={{
+    basic: {
+      title: "Rizuka Miku - Menyinari Kegelapan Yang Ada Di Hatimu",
+      type: "website",
+      image: "https://avatars.githubusercontent.com/u/183397269?s=400&v=4",
+      url: "https://rizuka-miku.github.io"
+    },
+    optional: {
+      description:
+        "Rizuka Miku menyinari kegelapan yang ada di hatimu melalui cerita, tawa, dan kebersamaan. Indie VTuber Indonesia bertema Kucing Bulan mari ikut ke dunia Rizuka Miku di Rizuniverse!",
+      siteName: "Rizuka Miku",
+      locale: "id_ID"
+    }
+  }}
+  twitter={{
+    card: "summary_large_image",
+    site: "@Rizuka_Miku",
+    creator: "@Rizuka_Miku",
+    title: "Rizuka Miku - Menyinari Kegelapan Yang Ada Di Hatimu",
+    description:
+      "Rizuka Miku menyinari kegelapan yang ada di hatimu melalui cerita, tawa, dan kebersamaan. Indie VTuber Indonesia bertema Kucing Bulan mari ikut ke dunia Rizuka Miku di Rizuniverse!",
+    image:
+      "https://pbs.twimg.com/media/F0IQdH4aMAEKzPB?format=jpg&name=large"
+  }}
+  extend={{
+    meta: [
+      { name: "keywords", content: "Rizuka Miku, VTuber Indonesia, Indie VTuber Indonesia, VTuber Kucing, Kucing Bulan, Rizuniverse, Rizu, Miku, VTuber Indie, Virtual YouTuber Indonesia, VTuber ID, Streamer VTuber Indonesia" },
+      { name: "author", content: "Tomato" },
+      { name: "creator", content: "Rizuka Miku" },
+      { name: "robots", content: "index, follow" },
+      { name: "theme-color", content: "#0f172a" },
+      { name: "language", content: "id" },
+      { name: "twitter:text:title", content: "Rizuka Miku - Menyinari Kegelapan Yang Ada Di Hatimu" }
+    ]
+  }}
+/>
+
   </head>
   <body>
       <App client:load />
