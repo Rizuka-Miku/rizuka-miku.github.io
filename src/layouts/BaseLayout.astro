@@ -1,0 +1,140 @@
+---
+import { SEO } from 'astro-seo'
+import '@/styles/style.css'
+import {
+  OG_IMAGE,
+  SITE_DESCRIPTION,
+  SITE_KEYWORDS,
+  SITE_NAME,
+  SITE_URL,
+  TWITTER_HANDLE,
+} from '@/lib/site'
+
+interface Props {
+  title: string
+  description?: string
+  /** Path-only canonical, e.g. "/songs/rasa-cemasku/". Defaults to the current URL. */
+  canonicalPath?: string
+  image?: string
+  /** JSON-LD objects serialised into the head. */
+  jsonLd?: Record<string, unknown>[]
+  ogType?: 'website' | 'article' | 'music.song'
+}
+
+const {
+  title,
+  description = SITE_DESCRIPTION,
+  canonicalPath,
+  image = OG_IMAGE,
+  jsonLd = [],
+  ogType = 'website',
+} = Astro.props
+
+const canonical = canonicalPath
+  ? new URL(canonicalPath, SITE_URL).href
+  : new URL(Astro.url.pathname, SITE_URL).href
+---
+
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/rizuka-bocil.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="preconnect" href="https://img.youtube.com" />
+
+    <SEO
+      title={title}
+      description={description}
+      canonical={canonical}
+      openGraph={{
+        basic: { title, type: ogType, image, url: canonical },
+        optional: { description, siteName: SITE_NAME, locale: 'id_ID' },
+      }}
+      twitter={{
+        card: 'summary_large_image',
+        site: TWITTER_HANDLE,
+        creator: TWITTER_HANDLE,
+        title,
+        description,
+        image,
+      }}
+      extend={{
+        meta: [
+          { name: 'keywords', content: SITE_KEYWORDS },
+          { name: 'author', content: 'Tomato' },
+          { name: 'creator', content: SITE_NAME },
+          { name: 'robots', content: 'index, follow, max-image-preview:large' },
+          { name: 'theme-color', content: '#A1326F' },
+          { name: 'language', content: 'id' },
+        ],
+      }}
+    />
+
+    {
+      jsonLd.map((schema) => (
+        <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
+      ))
+    }
+
+    {/*
+      Runs before first paint so a dark-mode visitor never sees a white flash.
+      Also marks the document as JS-capable, which gates the reveal animations
+      so no-JS visitors and crawlers always get fully visible content.
+    */}
+    <script is:inline>
+      ;(() => {
+        try {
+          const stored = localStorage.getItem('theme')
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+          if (stored === 'dark' || (!stored && prefersDark)) {
+            document.documentElement.classList.add('dark')
+          }
+        } catch (error) {
+          /* localStorage unavailable (private mode), fall back to light. */
+        }
+        document.documentElement.classList.add('js')
+      })()
+    </script>
+  </head>
+
+  {/* `relative` makes the body the containing block for the ScrollToTop sentinel. */}
+  <body class="relative min-h-[100dvh] overflow-x-hidden bg-background text-foreground">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
+    >
+      Lewati ke konten utama
+    </a>
+
+    <slot />
+
+    {/* Scroll reveal: adds .is-visible as elements enter the viewport. */}
+    <script is:inline>
+      ;(() => {
+        const targets = document.querySelectorAll('[data-reveal]')
+        if (!targets.length) return
+
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        if (reduceMotion || !('IntersectionObserver' in window)) {
+          targets.forEach((el) => el.classList.add('is-visible'))
+          return
+        }
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return
+              entry.target.classList.add('is-visible')
+              observer.unobserve(entry.target)
+            })
+          },
+          { rootMargin: '0px 0px -10% 0px', threshold: 0.08 },
+        )
+
+        targets.forEach((el) => observer.observe(el))
+      })()
+    </script>
+  </body>
+</html>

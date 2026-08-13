@@ -1,0 +1,74 @@
+---
+/**
+ * Mobile carousel built on CSS scroll-snap. The slides are real HTML in the
+ * document (unlike a JS-driven slider), so crawlers see every song even though
+ * only one is visible at a time. JS only syncs the dot indicators.
+ */
+interface Props {
+  count: number
+  label: string
+}
+
+const { count, label } = Astro.props
+const id = `carousel-${label.toLowerCase().replace(/\s+/g, '-')}`
+---
+
+<div class="flex flex-col gap-4" data-carousel>
+  <ul
+    id={id}
+    role="list"
+    aria-label={label}
+    class="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-4 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+    data-carousel-track
+  >
+    <slot />
+  </ul>
+
+  <div class="flex justify-center gap-2" data-carousel-dots aria-hidden="true">
+    {
+      Array.from({ length: count }).map((_, index) => (
+        <span
+          class:list={[
+            'h-2 rounded-full transition-all duration-300',
+            index === 0 ? 'w-5 bg-primary' : 'w-2 bg-border',
+          ]}
+          data-dot
+        />
+      ))
+    }
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('[data-carousel]').forEach((carousel) => {
+    const track = carousel.querySelector<HTMLElement>('[data-carousel-track]')
+    const dots = Array.from(carousel.querySelectorAll<HTMLElement>('[data-dot]'))
+    if (!track || !dots.length) return
+
+    const slides = Array.from(track.children) as HTMLElement[]
+
+    const setActive = (index: number) => {
+      dots.forEach((dot, i) => {
+        const active = i === index
+        dot.classList.toggle('w-5', active)
+        dot.classList.toggle('bg-primary', active)
+        dot.classList.toggle('w-2', !active)
+        dot.classList.toggle('bg-border', !active)
+      })
+    }
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return
+            setActive(slides.indexOf(entry.target as HTMLElement))
+          })
+        },
+        { root: track, threshold: 0.6 },
+      )
+
+      slides.forEach((slide) => observer.observe(slide))
+    }
+  })
+</script>

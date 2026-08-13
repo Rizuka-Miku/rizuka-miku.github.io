@@ -1,0 +1,95 @@
+---
+import SocialIcon from '@/components/SocialIcon.astro'
+import { AVATAR_IMAGE, PROFILE, SITE_NAME, SOCIALS } from '@/lib/site'
+---
+
+<div class="mx-auto max-w-7xl px-4 lg:px-6">
+  {/*
+    Editorial split: portrait holds the left column at a fixed weight while
+    the copy and facts run wider on the right. Deliberately not centred, so
+    this section does not echo the hero's composition.
+  */}
+  <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+    <div class="lg:col-span-5">
+      <div class="relative w-fit" data-reveal>
+        <div
+          class="absolute -inset-4 -z-10 rounded-full bg-primary/25 blur-2xl"
+          aria-hidden="true"
+        >
+        </div>
+        <img
+          src={AVATAR_IMAGE}
+          width="320"
+          height="320"
+          loading="lazy"
+          decoding="async"
+          alt={`Foto profil ${SITE_NAME}`}
+          class="h-44 w-44 rounded-full object-cover ring-4 ring-white/15 sm:h-56 sm:w-56"
+        />
+      </div>
+
+      <h2
+        class="mt-8 text-3xl font-extrabold tracking-tight text-white sm:text-4xl"
+        data-reveal
+        style="--reveal-delay:60ms"
+      >
+        Tentang {SITE_NAME}
+      </h2>
+
+      <p
+        class="mt-4 max-w-md text-base leading-relaxed text-white/70"
+        data-reveal
+        style="--reveal-delay:120ms"
+      >
+        Indie VTuber Indonesia bertema Kucing Bulan. Menyinari kegelapan yang ada di hatimu lewat
+        cerita, tawa, dan kebersamaan bersama Rizuniverse.
+      </p>
+    </div>
+
+    <div class="lg:col-span-7 lg:pt-6">
+      {/*
+        Facts as a two-column definition list separated by hairlines rather
+        than as six bordered tiles: fewer boxes, same information.
+      */}
+      <dl class="grid grid-cols-1 gap-x-12 sm:grid-cols-2">
+        {
+          PROFILE.map((item, index) => (
+            <div
+              data-reveal
+              style={`--reveal-delay:${index * 60}ms`}
+              class="flex items-baseline justify-between gap-4 border-b border-white/10 py-4"
+            >
+              <dt class="text-sm text-white/50">{item.label}</dt>
+              <dd class="text-right text-sm font-semibold text-white">{item.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+
+      {/*
+        Socials as compact pills, a different shape from both the facts list
+        above and the card grids further down the page.
+      */}
+      <ul class="mt-10 flex flex-wrap gap-2.5">
+        {
+          SOCIALS.map((social, index) => (
+            <li data-reveal style={`--reveal-delay:${index * 50}ms`}>
+              <a
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-center gap-2.5 rounded-full border border-white/15 bg-white/5 py-2.5
+                  pl-3.5 pr-4 transition-all duration-300 hover:-translate-y-0.5
+                  hover:border-primary-600 hover:bg-white/10"
+              >
+                <SocialIcon icon={social.icon} class="h-4 w-4 shrink-0 text-white/70" />
+                <span class="text-sm font-medium text-white">{social.name}</span>
+                <span class="text-sm text-white/45">{social.handle}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</div>

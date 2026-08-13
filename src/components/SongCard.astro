@@ -1,0 +1,111 @@
+---
+import { Icon } from 'astro-icon/components'
+import type { Song } from '@/types/song'
+
+interface Props {
+  song: Song
+  /** When present the card links through to its own page. */
+  slug?: string
+  /** Staggered reveal delay in ms. */
+  delay?: number
+  /** Lead cell of the original-song bento: spans the full row, art on the left. */
+  featured?: boolean
+  /** Landscape row used by the cover-song section. */
+  wide?: boolean
+}
+
+const { song, slug, delay = 0, featured = false, wide = false } = Astro.props
+const detailHref = slug ? `/songs/${slug}/` : null
+
+/** Horizontal layouts share one shape; the plain card stays vertical. */
+const isHorizontal = featured || wide
+---
+
+<article
+  data-reveal
+  style={delay ? `--reveal-delay:${delay}ms` : undefined}
+  class:list={[
+    'card-lift group flex h-full overflow-hidden rounded-2xl border border-border bg-card shadow-sm',
+    isHorizontal ? 'flex-col sm:flex-row' : 'flex-col',
+    featured && 'md:col-span-2 lg:col-span-4',
+  ]}
+>
+  <div
+    class:list={[
+      'relative overflow-hidden bg-muted',
+      isHorizontal ? 'aspect-video shrink-0 sm:w-[46%] sm:aspect-auto' : 'aspect-video',
+    ]}
+  >
+    <img
+      src={song.imageLink}
+      width={featured ? 960 : 480}
+      height={featured ? 540 : 270}
+      loading="lazy"
+      decoding="async"
+      alt={`Thumbnail ${song.title}`}
+      class="h-full w-full object-cover"
+    />
+  </div>
+
+  <div
+    class:list={[
+      'flex flex-1 flex-col gap-2',
+      featured ? 'p-6 sm:justify-center sm:p-9' : 'p-5 sm:justify-center',
+    ]}
+  >
+    <h3
+      class:list={[
+        'font-bold leading-snug text-card-foreground',
+        featured ? 'text-xl sm:text-3xl' : 'text-lg',
+      ]}
+    >
+      {
+        detailHref ? (
+          <a href={detailHref} class="transition-colors hover:text-primary-600">
+            {song.title}
+          </a>
+        ) : (
+          song.title
+        )
+      }
+    </h3>
+
+    <p class:list={['text-muted-foreground', featured ? 'text-base' : 'text-sm']}>
+      {song.description}
+    </p>
+
+    {/*
+      Vertical cards push their actions to the bottom so a grid row lines up.
+      Horizontal cards are taller than their text, so the same rule would leave
+      a void between the copy and the buttons; there the group stays with the text.
+    */}
+    <div
+      class:list={[
+        'flex flex-wrap items-center gap-2 pt-4',
+        !isHorizontal && 'mt-auto',
+      ]}
+    >
+      <a
+        href={song.projectLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn btn-solid !px-4 !py-2 text-[13px]"
+      >
+        <Icon name="ph:play-fill" class="h-4 w-4" />
+        Tonton
+      </a>
+
+      {
+        detailHref && (
+          <a href={detailHref} class="btn btn-outline !px-4 !py-2 text-[13px]">
+            Lirik
+            <Icon
+              name="ph:arrow-right"
+              class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5"
+            />
+          </a>
+        )
+      }
+    </div>
+  </div>
+</article>

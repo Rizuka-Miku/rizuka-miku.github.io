@@ -1,0 +1,26 @@
+---
+import { Icon } from 'astro-icon/components'
+import type { SocialLink } from '@/lib/site'
+
+interface Props {
+  icon: SocialLink['icon']
+  class?: string
+}
+
+const { icon, class: className = 'h-5 w-5' } = Astro.props
+
+/**
+ * Real vendor brand marks from Simple Icons, inlined at build time. Trakteer
+ * has no Simple Icons entry, so it falls back to a Phosphor gift glyph.
+ */
+const ICON_NAME: Record<SocialLink['icon'], string> = {
+  youtube: 'simple-icons:youtube',
+  x: 'simple-icons:x',
+  instagram: 'simple-icons:instagram',
+  tiktok: 'simple-icons:tiktok',
+  spotify: 'simple-icons:spotify',
+  gift: 'ph:gift-fill',
+}
+---
+
+<Icon name={ICON_NAME[icon]} class={className} aria-hidden="true" />

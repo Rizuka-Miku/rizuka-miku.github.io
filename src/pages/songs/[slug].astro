@@ -1,0 +1,228 @@
+---
+import { Icon } from 'astro-icon/components'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import Footer from '@/components/Footer.astro'
+import Header from '@/components/Header.astro'
+import ScrollToTop from '@/components/ScrollToTop.astro'
+import { lyricsExcerpt, originalSongs, songNeighbours, songUrl, youtubeId } from '@/lib/songs'
+import { AVATAR_IMAGE, SITE_NAME, SITE_URL } from '@/lib/site'
+import type { OriginalSong } from '@/types/song'
+
+export function getStaticPaths() {
+  return originalSongs.map((song) => ({
+    params: { slug: song.slug },
+    props: { song },
+  }))
+}
+
+interface Props {
+  song: OriginalSong
+}
+
+const { song } = Astro.props
+const { prev, next } = songNeighbours(song.slug)
+
+const canonicalPath = `/songs/${song.slug}/`
+const pageTitle = `${song.title} - Lirik Lagu ${SITE_NAME}`
+const description = `Lirik lengkap "${song.title}", ${song.description} oleh ${SITE_NAME}. ${lyricsExcerpt(song.lyrics, 90)}`
+
+const videoId = youtubeId(song.projectLink)
+
+/** Lyrics are split into stanzas so they render as readable blocks. */
+const stanzas = song.lyrics
+  .split(/\n\s*\n/)
+  .map((stanza) => stanza.split('\n').filter((line) => line.trim().length > 0))
+  .filter((stanza) => stanza.length > 0)
+
+const musicSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'MusicRecording',
+  name: song.title,
+  description: song.description,
+  url: songUrl(song.slug, SITE_URL),
+  image: song.imageLink,
+  inLanguage: 'id-ID',
+  byArtist: {
+    '@type': 'MusicGroup',
+    name: SITE_NAME,
+    url: SITE_URL,
+    image: AVATAR_IMAGE,
+  },
+  lyrics: {
+    '@type': 'CreativeWork',
+    text: song.lyrics,
+    inLanguage: 'id-ID',
+  },
+  ...(videoId
+    ? {
+        video: {
+          '@type': 'VideoObject',
+          name: song.title,
+          description: song.description,
+          thumbnailUrl: song.imageLink,
+          embedUrl: `https://www.youtube.com/embed/${videoId}`,
+          contentUrl: song.projectLink,
+        },
+      }
+    : {}),
+}
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Beranda', item: SITE_URL },
+    { '@type': 'ListItem', position: 2, name: 'Original Song', item: `${SITE_URL}/#original` },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: song.title,
+      item: songUrl(song.slug, SITE_URL),
+    },
+  ],
+}
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={description}
+  canonicalPath={canonicalPath}
+  image={song.imageLink}
+  ogType="music.song"
+  jsonLd={[musicSchema, breadcrumbSchema]}
+>
+  <Header />
+
+  <main id="main" class="flex-1">
+    {/*
+      The night surface starts at the very top so it runs behind the floating
+      header capsule; the clearance lives in the section's own padding rather
+      than on <main>, which would show a pale slab behind the header.
+    */}
+    <section class="relative isolate overflow-hidden bg-ink pt-20 text-white">
+      <div class="moonlight pointer-events-none absolute inset-0 -z-10"></div>
+      <div class="starfield pointer-events-none absolute inset-0 -z-10"></div>
+
+      <div class="mx-auto max-w-5xl px-4 py-14 lg:px-6 lg:py-20">
+        <nav aria-label="Breadcrumb" class="mb-8 text-sm text-white/60">
+          <ol class="flex flex-wrap items-center gap-2">
+            <li><a href="/" class="transition-colors hover:text-white">Beranda</a></li>
+            <li aria-hidden="true">/</li>
+            <li><a href="/#original" class="transition-colors hover:text-white">Original Song</a></li>
+            <li aria-hidden="true">/</li>
+            <li><span class="text-white">{song.title}</span></li>
+          </ol>
+        </nav>
+
+        <div class="grid gap-10 md:grid-cols-[300px_1fr] md:items-center">
+          <div class="relative">
+            <div
+              class="absolute -inset-5 -z-10 rounded-[2rem] bg-primary/25 blur-3xl"
+              aria-hidden="true"
+            >
+            </div>
+            <img
+              src={song.imageLink}
+              width="480"
+              height="270"
+              alt={`Thumbnail ${song.title}`}
+              class="w-full rounded-2xl border border-white/20 object-cover shadow-2xl shadow-black/40"
+            />
+          </div>
+
+          <div>
+            <h1 class="text-3xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl">
+              {song.title}
+            </h1>
+            <p class="mt-4 text-white/70">{song.description}</p>
+            <p class="mt-1 text-sm text-white/50">oleh {SITE_NAME}</p>
+
+            <a
+              href={song.projectLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn-onbrand mt-7"
+            >
+              <Icon name="ph:play-fill" class="h-4 w-4" />
+              Tonton di YouTube
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lyrics: plain HTML, always present for crawlers and LLMs -->
+    <section class="bg-background py-14 lg:py-20">
+      <div class="mx-auto max-w-3xl px-4 lg:px-6">
+        <h2 class="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          Lirik {song.title}
+        </h2>
+
+        {/* Stanzas separated by space and a hairline rule rather than boxed
+            in a card, so long lyrics stay readable as a text column. */}
+        <div class="mt-8 divide-y divide-border">
+          {
+            stanzas.map((lines) => (
+              <p class="py-6 text-base leading-[1.9] text-foreground first:pt-0">
+                {lines.map((line, index) => (
+                  <>
+                    {index > 0 && <br />}
+                    {line}
+                  </>
+                ))}
+              </p>
+            ))
+          }
+        </div>
+
+        <p class="mt-8 text-sm text-muted-foreground">
+          Lirik “{song.title}”, {song.description} oleh {SITE_NAME}.
+        </p>
+      </div>
+    </section>
+
+    <!-- Prev / next -->
+    <nav aria-label="Lagu lainnya" class="border-t border-border bg-secondary py-12">
+      <div class="mx-auto grid max-w-5xl gap-4 px-4 sm:grid-cols-2 lg:px-6">
+        {
+          prev ? (
+            <a
+              href={`/songs/${prev.slug}/`}
+              class="group rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary"
+            >
+              <span class="flex items-center gap-1.5 text-xs text-muted-foreground">
+                <Icon name="ph:arrow-left" class="h-3.5 w-3.5" />
+                Sebelumnya
+              </span>
+              <span class="mt-1.5 block font-semibold text-card-foreground group-hover:text-primary-600">
+                {prev.title}
+              </span>
+            </a>
+          ) : (
+            <span />
+          )
+        }
+
+        {
+          next && (
+            <a
+              href={`/songs/${next.slug}/`}
+              class="group rounded-2xl border border-border bg-card p-6 text-right transition-all duration-300 hover:-translate-y-0.5 hover:border-primary sm:col-start-2"
+            >
+              <span class="flex items-center justify-end gap-1.5 text-xs text-muted-foreground">
+                Selanjutnya
+                <Icon name="ph:arrow-right" class="h-3.5 w-3.5" />
+              </span>
+              <span class="mt-1.5 block font-semibold text-card-foreground group-hover:text-primary-600">
+                {next.title}
+              </span>
+            </a>
+          )
+        }
+      </div>
+    </nav>
+  </main>
+
+  <ScrollToTop />
+  <Footer />
+</BaseLayout>

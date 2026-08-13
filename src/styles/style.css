@@ -1,4 +1,282 @@
+@import "@fontsource-variable/plus-jakarta-sans";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-  
+
+@layer base {
+  /*
+   * Design tokens. The brand pink (#A1326F) and navy (#253D57) are preserved
+   * exactly, expressed in HSL so Tailwind can derive opacity variants.
+   *   --primary  327 53% 41%  == #A1326F
+   *   --ink      211 40% 24%  == #253D57
+   */
+  :root {
+    /* Warm-tinted paper rather than pure white, so the pink sits in a
+       palette instead of floating on a clinical sheet. */
+    --background: 330 40% 99%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 327 53% 41%;
+    --primary-foreground: 0 0% 100%;
+    --primary-50: 327 53% 97%;
+    --primary-100: 327 45% 92%;
+    --primary-600: 327 53% 35%;
+    --primary-700: 327 53% 27%;
+
+    --ink: 211 40% 24%;
+    --ink-foreground: 0 0% 100%;
+
+    /* Neutrals carry a trace of the brand hue so warm and cool greys never
+       fight each other across sections. */
+    --secondary: 330 30% 96%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 330 30% 96%;
+    --muted-foreground: 327 10% 42%;
+
+    --accent: 327 45% 92%;
+    --accent-foreground: 327 53% 27%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 330 22% 90%;
+    --input: 330 22% 90%;
+    --ring: 327 53% 41%;
+
+    /* One radius scale for the whole page: cards 1rem, controls full-pill. */
+    --radius: 1rem;
+  }
+
+  .dark {
+    /* Dark mode is the navy brand token taken deeper, not a neutral slate. */
+    --background: 211 40% 7%;
+    --foreground: 210 40% 98%;
+
+    --card: 211 38% 11%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 211 38% 11%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 327 53% 27%;
+    --primary-foreground: 0 0% 100%;
+    --primary-50: 327 30% 16%;
+    --primary-100: 327 35% 22%;
+    --primary-600: 327 50% 45%;
+    --primary-700: 327 53% 27%;
+
+    --ink: 211 38% 11%;
+    --ink-foreground: 210 40% 98%;
+
+    --secondary: 211 33% 16%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 211 33% 16%;
+    --muted-foreground: 213 20% 68%;
+
+    --accent: 327 35% 22%;
+    --accent-foreground: 327 60% 85%;
+
+    --destructive: 0 63% 45%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 211 30% 19%;
+    --input: 211 30% 19%;
+    --ring: 327 50% 55%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Visible, consistent focus ring for keyboard users. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+}
+
+@layer components {
+  /*
+   * Scroll reveal. Elements are fully present in the static HTML and visible
+   * by default; the hidden state is applied by JS only, so a crawler or a
+   * no-JS visitor always sees the content.
+   */
+  [data-reveal] {
+    will-change: opacity, transform;
+  }
+
+  .js [data-reveal] {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  .js [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /*
+   * Night sky behind the dark sections. The brand is a moon cat, so the
+   * gradient reads as moonlight falling through navy rather than as a
+   * generic blurred blob. Built only from --primary and --ink.
+   */
+  .moonlight {
+    background:
+      radial-gradient(30rem 26rem at 78% 8%, hsl(var(--primary) / 0.42), transparent 64%),
+      radial-gradient(40rem 34rem at 8% 26%, hsl(var(--primary-700) / 0.5), transparent 62%),
+      radial-gradient(46rem 40rem at 62% 108%, hsl(var(--ink) / 0.62), transparent 58%);
+    animation: moon-drift 26s ease-in-out infinite alternate;
+  }
+
+  @keyframes moon-drift {
+    from {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    to {
+      transform: translate3d(-2%, 1.5%, 0) scale(1.05);
+    }
+  }
+
+  /*
+   * Star field. A tiled radial-gradient rather than hundreds of DOM nodes,
+   * so it costs one painted layer and no elements.
+   */
+  .starfield {
+    background-image:
+      radial-gradient(1.5px 1.5px at 12% 22%, hsl(0 0% 100% / 0.9), transparent 100%),
+      radial-gradient(1px 1px at 34% 68%, hsl(0 0% 100% / 0.65), transparent 100%),
+      radial-gradient(1.5px 1.5px at 58% 14%, hsl(0 0% 100% / 0.8), transparent 100%),
+      radial-gradient(1px 1px at 72% 52%, hsl(0 0% 100% / 0.55), transparent 100%),
+      radial-gradient(1.5px 1.5px at 88% 34%, hsl(0 0% 100% / 0.75), transparent 100%),
+      radial-gradient(1px 1px at 24% 88%, hsl(0 0% 100% / 0.5), transparent 100%);
+    background-size: 42rem 42rem;
+    animation: twinkle 7s ease-in-out infinite alternate;
+  }
+
+  @keyframes twinkle {
+    from {
+      opacity: 0.45;
+    }
+    to {
+      opacity: 0.95;
+    }
+  }
+
+  /* Card hover lift. Tinted to the brand hue, never a pure-black shadow. */
+  .card-lift {
+    transition:
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .card-lift:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px -18px hsl(var(--primary) / 0.55);
+  }
+
+  .card-lift:hover img {
+    transform: scale(1.05);
+  }
+
+  .card-lift img {
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /*
+   * Shared control shapes. Declaring them once keeps every CTA on the same
+   * pill radius and the same tactile press across all pages.
+   */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full
+      px-6 py-3 text-sm font-semibold transition-all duration-300;
+  }
+
+  .btn:active {
+    transform: scale(0.98);
+  }
+
+  .btn-solid {
+    @apply bg-primary text-primary-foreground hover:bg-primary-600;
+  }
+
+  .btn-onbrand {
+    @apply bg-white text-primary-700 shadow-lg shadow-black/20 hover:bg-white/90;
+  }
+
+  .btn-ghost-onbrand {
+    @apply border border-white/45 text-white hover:border-white hover:bg-white/10;
+  }
+
+  .btn-outline {
+    @apply border border-border text-foreground hover:border-primary hover:text-primary-600;
+  }
+
+  /* Animated underline for nav links. */
+  .nav-link {
+    position: relative;
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    height: 2px;
+    width: 100%;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .nav-link:hover::after,
+  .nav-link:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+/* Respect the user's motion preference across every animation above. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
