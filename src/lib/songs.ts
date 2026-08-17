@@ -35,7 +35,8 @@ export const originalSongs: OriginalSong[] = (originalSongData as Song[]).map((s
   }
 })
 
-export const coverSongs: Song[] = coverSongData as Song[]
+/** JSON keeps newest entries appended last; the UI shows newest first. */
+export const coverSongs: Song[] = [...(coverSongData as Song[])].reverse()
 
 export function getSongBySlug(slug: string): OriginalSong | undefined {
   return originalSongs.find((song) => song.slug === slug)

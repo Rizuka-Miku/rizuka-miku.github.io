@@ -61,6 +61,9 @@ const websiteSchema = {
  * renders an empty tile as the catalogue grows.
  */
 const [featuredSong, ...restSongs] = [...originalSongs].reverse()
+
+/** Cover songs already arrive newest-first, so the head leads the bento. */
+const [featuredCover, ...restCovers] = coverSongs
 ---
 
 <BaseLayout
@@ -192,8 +195,8 @@ const [featuredSong, ...restSongs] = [...originalSongs].reverse()
     </section>
 
     <!--
-      Cover songs. A deliberately different family from the bento above:
-      wide landscape rows on a tinted surface, two songs to two cells.
+      Cover songs. Same bento as the originals — newest as the lead cell —
+      on a tinted surface, at three columns so six followers fill two rows.
     -->
     <section id="cover" class="scroll-mt-24 bg-secondary py-20 lg:py-28">
       <div class="mx-auto max-w-7xl px-4 lg:px-6">
@@ -218,8 +221,9 @@ const [featuredSong, ...restSongs] = [...originalSongs].reverse()
           </SongCarousel>
         </div>
 
-        <div class="hidden gap-6 md:grid md:grid-cols-2">
-          {coverSongs.map((song, index) => <SongCard song={song} wide delay={index * 70} />)}
+        <div class="hidden gap-6 md:grid md:grid-cols-2 lg:grid-cols-3">
+          <SongCard song={featuredCover} featured />
+          {restCovers.map((song, index) => <SongCard song={song} delay={(index + 1) * 70} />)}
         </div>
       </div>
     </section>

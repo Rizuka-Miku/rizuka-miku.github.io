@@ -8,17 +8,12 @@ interface Props {
   slug?: string
   /** Staggered reveal delay in ms. */
   delay?: number
-  /** Lead cell of the original-song bento: spans the full row, art on the left. */
+  /** Lead cell of a song bento: spans the full row, art on the left. */
   featured?: boolean
-  /** Landscape row used by the cover-song section. */
-  wide?: boolean
 }
 
-const { song, slug, delay = 0, featured = false, wide = false } = Astro.props
+const { song, slug, delay = 0, featured = false } = Astro.props
 const detailHref = slug ? `/songs/${slug}/` : null
-
-/** Horizontal layouts share one shape; the plain card stays vertical. */
-const isHorizontal = featured || wide
 ---
 
 <article
@@ -26,14 +21,14 @@ const isHorizontal = featured || wide
   style={delay ? `--reveal-delay:${delay}ms` : undefined}
   class:list={[
     'card-lift group flex h-full overflow-hidden rounded-2xl border border-border bg-card shadow-sm',
-    isHorizontal ? 'flex-col sm:flex-row' : 'flex-col',
-    featured && 'md:col-span-2 lg:col-span-4',
+    featured ? 'flex-col sm:flex-row' : 'flex-col',
+    featured && 'md:col-span-full',
   ]}
 >
   <div
     class:list={[
       'relative overflow-hidden bg-muted',
-      isHorizontal ? 'aspect-video shrink-0 sm:w-[46%] sm:aspect-auto' : 'aspect-video',
+      featured ? 'aspect-video shrink-0 sm:w-[46%] sm:aspect-auto' : 'aspect-video',
     ]}
   >
     <img
@@ -82,7 +77,7 @@ const isHorizontal = featured || wide
     <div
       class:list={[
         'flex flex-wrap items-center gap-2 pt-4',
-        !isHorizontal && 'mt-auto',
+        !featured && 'mt-auto',
       ]}
     >
       <a
