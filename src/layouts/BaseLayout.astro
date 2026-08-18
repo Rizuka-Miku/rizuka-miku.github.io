@@ -19,6 +19,7 @@ interface Props {
   /** JSON-LD objects serialised into the head. */
   jsonLd?: Record<string, unknown>[]
   ogType?: 'website' | 'article' | 'music.song'
+  preloadImage?: string
 }
 
 const {
@@ -28,6 +29,7 @@ const {
   image = OG_IMAGE,
   jsonLd = [],
   ogType = 'website',
+  preloadImage,
 } = Astro.props
 
 const canonical = canonicalPath
@@ -43,6 +45,13 @@ const canonical = canonicalPath
     <link rel="icon" type="image/webp" href="/rizuka-bocil.webp" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="preconnect" href="https://img.youtube.com" />
+    <link rel="preconnect" href="https://i.ytimg.com" />
+    <link rel="preconnect" href="https://pbs.twimg.com" />
+    {
+      preloadImage && (
+        <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />
+      )
+    }
 
     <SEO
       title={title}

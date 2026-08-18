@@ -53,6 +53,19 @@ export function youtubeId(projectLink: string): string | null {
   return match ? match[1] : null
 }
 
+/**
+ * Swap a YouTube thumbnail URL to a smaller variant. Cards render at 480px
+ * wide, so `hqdefault` (480x360) is already 2x the pixels they need, while
+ * `maxresdefault` (1280x720) is roughly 4x the bytes for no visible gain.
+ * Non-YouTube URLs pass through untouched.
+ */
+export function thumbnailVariant(
+  imageLink: string,
+  variant: 'maxresdefault' | 'hqdefault' | 'mqdefault',
+): string {
+  return imageLink.replace(/\/(maxresdefault|hqdefault|mqdefault|sddefault)\.jpg/, `/${variant}.jpg`)
+}
+
 /** Neighbouring songs, for prev/next navigation on a song page. */
 export function songNeighbours(slug: string): {
   prev: OriginalSong | null

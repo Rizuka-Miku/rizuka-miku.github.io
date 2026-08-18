@@ -4,7 +4,14 @@ import BaseLayout from '@/layouts/BaseLayout.astro'
 import Footer from '@/components/Footer.astro'
 import Header from '@/components/Header.astro'
 import ScrollToTop from '@/components/ScrollToTop.astro'
-import { lyricsExcerpt, originalSongs, songNeighbours, songUrl, youtubeId } from '@/lib/songs'
+import {
+  lyricsExcerpt,
+  originalSongs,
+  songNeighbours,
+  songUrl,
+  thumbnailVariant,
+  youtubeId,
+} from '@/lib/songs'
 import { AVATAR_IMAGE_LARGE, SITE_NAME, SITE_URL } from '@/lib/site'
 import type { OriginalSong } from '@/types/song'
 
@@ -27,6 +34,8 @@ const pageTitle = `${song.title} - Lirik Lagu ${SITE_NAME}`
 const description = `Lirik lengkap "${song.title}", ${song.description} oleh ${SITE_NAME}. ${lyricsExcerpt(song.lyrics, 90)}`
 
 const videoId = youtubeId(song.projectLink)
+/** Rendered in a 300px column; the full-size art stays for OG and structured data. */
+const thumbnail = thumbnailVariant(song.imageLink, 'hqdefault')
 
 /** Lyrics are split into stanzas so they render as readable blocks. */
 const stanzas = song.lyrics
@@ -90,6 +99,7 @@ const breadcrumbSchema = {
   image={song.imageLink}
   ogType="music.song"
   jsonLd={[musicSchema, breadcrumbSchema]}
+  preloadImage={thumbnail}
 >
   <Header />
 
@@ -122,7 +132,7 @@ const breadcrumbSchema = {
             >
             </div>
             <img
-              src={song.imageLink}
+              src={thumbnail}
               width="480"
               height="270"
               alt={`Thumbnail ${song.title}`}
