@@ -5,7 +5,7 @@ import Footer from '@/components/Footer.astro'
 import Header from '@/components/Header.astro'
 import ScrollToTop from '@/components/ScrollToTop.astro'
 import { lyricsExcerpt, originalSongs, songNeighbours, songUrl, youtubeId } from '@/lib/songs'
-import { AVATAR_IMAGE, SITE_NAME, SITE_URL } from '@/lib/site'
+import { AVATAR_IMAGE_LARGE, SITE_NAME, SITE_URL } from '@/lib/site'
 import type { OriginalSong } from '@/types/song'
 
 export function getStaticPaths() {
@@ -46,7 +46,7 @@ const musicSchema = {
     '@type': 'MusicGroup',
     name: SITE_NAME,
     url: SITE_URL,
-    image: AVATAR_IMAGE,
+    image: AVATAR_IMAGE_LARGE,
   },
   lyrics: {
     '@type': 'CreativeWork',

@@ -14,8 +14,14 @@ export const SITE_DESCRIPTION =
 export const SITE_KEYWORDS =
   'Rizuka Miku, VTuber Indonesia, Indie VTuber Indonesia, VTuber Kucing, Kucing Bulan, Rizuniverse, Rizu, Miku, VTuber Indie, Virtual YouTuber Indonesia, VTuber ID, Streamer VTuber Indonesia'
 
-export const AVATAR_IMAGE =
-  'https://pbs.twimg.com/media/GYI8VTAaIAA1usl?format=jpg&name=4096x4096'
+/** twimg serves resized variants via `name`; ask for what is actually displayed. */
+const AVATAR_BASE = 'https://pbs.twimg.com/media/GYI8VTAaIAA1usl?format=jpg'
+
+/** Displayed at 224px (56 * 4) at most, so 900x900 covers 2x retina. */
+export const AVATAR_IMAGE = `${AVATAR_BASE}&name=900x900`
+
+/** Structured data and social cards want the large original. */
+export const AVATAR_IMAGE_LARGE = `${AVATAR_BASE}&name=4096x4096`
 
 export const OG_IMAGE = 'https://avatars.githubusercontent.com/u/183397269?s=400&v=4'
 
