@@ -1,6 +1,6 @@
 ---
 id: "6"
-title: "【ORIGINAL SONG】WARGAVI48 - 'TETAP DENGANMU' MV"
+title: "Tetap Denganmu"
 description: "JKT48V Graduation Project"
 projectLink: "https://youtu.be/jKm9kWcfOlM?si=h2iGCEoCQ_Q9sfML"
 imageLink: "https://img.youtube.com/vi/jKm9kWcfOlM/maxresdefault.jpg"
