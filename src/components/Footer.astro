@@ -28,7 +28,7 @@ const year = new Date().getFullYear()
         SOCIALS.map((social) => (
           <li>
             <a
-              href={social.url}
+              href={social.ctaUrl ?? social.url}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`${SITE_NAME} di ${social.name}`}

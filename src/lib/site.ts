@@ -41,6 +41,7 @@ export interface SocialLink {
   name: string
   handle: string
   url: string
+  ctaUrl?: string
   icon: 'youtube' | 'x' | 'instagram' | 'tiktok' | 'spotify' | 'gift'
 }
 
@@ -49,9 +50,16 @@ export const SOCIALS: readonly SocialLink[] = [
     name: 'YouTube',
     handle: 'Rizuka Miku Ch.',
     url: 'https://www.youtube.com/@RizukaMiku_Vtuber',
+    ctaUrl: 'https://www.youtube.com/@RizukaMiku_Vtuber?sub_confirmation=1',
     icon: 'youtube',
   },
-  { name: 'X', handle: '@Rizuka_Miku', url: 'https://x.com/Rizuka_Miku', icon: 'x' },
+  {
+    name: 'X',
+    handle: '@Rizuka_Miku',
+    url: 'https://x.com/Rizuka_Miku',
+    ctaUrl: 'https://x.com/intent/follow?screen_name=Rizuka_Miku',
+    icon: 'x',
+  },
   {
     name: 'Instagram',
     handle: 'rizuka_miku',

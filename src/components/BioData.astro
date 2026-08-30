@@ -75,7 +75,7 @@ import { AVATAR_IMAGE, PROFILE, SITE_NAME, SOCIALS } from '@/lib/site'
           SOCIALS.map((social, index) => (
             <li data-reveal style={`--reveal-delay:${index * 50}ms`}>
               <a
-                href={social.url}
+                href={social.ctaUrl ?? social.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 class="flex items-center gap-2.5 rounded-full border border-white/15 bg-white/5 py-2.5

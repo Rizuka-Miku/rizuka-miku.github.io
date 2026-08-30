@@ -1,15 +1,12 @@
 import type { APIRoute } from 'astro'
-import { coverSongs, originalSongs, songUrl } from '@/lib/songs'
+import { coverSongs, getOriginalSongs, songUrl } from '@/lib/songs'
 import { PROFILE, SITE_DESCRIPTION, SITE_NAME, SITE_URL, SOCIALS, TAGLINE } from '@/lib/site'
 
-/** Escape brackets so titles like "[COVER] ..." stay valid Markdown link text. */
 const escapeLinkText = (text: string): string => text.replace(/([[\]])/g, '\\$1')
 
-/**
- * llms.txt, a plain-text digest of the whole site for language models.
- * See https://llmstxt.org/
- */
-export const GET: APIRoute = () => {
+export const GET: APIRoute = async () => {
+  const originalSongs = await getOriginalSongs()
+
   const sections = [
     `# ${SITE_NAME}`,
     `> ${SITE_DESCRIPTION}`,
